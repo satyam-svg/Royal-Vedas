@@ -5,10 +5,12 @@ import * as Font from "expo-font";
 import Svg, { Path, LinearGradient, Stop, Defs, Line } from "react-native-svg";
 import { ThemedView } from "../components/ThemedView";
 import { ThemedText } from "../components/ThemedText";
+import { useRouter } from "expo-router";
 
 SplashScreen.preventAutoHideAsync();
 
 const SplashScreenComponent = ({ navigation }: any) => {
+  const router=useRouter()
     const [isReady, setIsReady] = useState(false);
     const [fontsLoaded, setFontsLoaded] = useState(false);
     
@@ -119,9 +121,9 @@ const SplashScreenComponent = ({ navigation }: any) => {
               ]).start();
   
               timeout = setTimeout(() => {
-                  setIsReady(true);
-                  SplashScreen.hideAsync();
-                  navigation?.replace("Home");
+                setIsReady(true);
+                SplashScreen.hideAsync();
+                router.replace("/login"); // Navigate to login page instead of home
               }, 2000);
           } catch (error) {
               console.error("Error during animation setup:", error);

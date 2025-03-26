@@ -6,11 +6,11 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-export default function HomeScreen() {
+export default function HomePage() {
   return (
     <ThemedView style={{flex:1}}>
       <SafeAreaView>
-      <ThemedText>hey this is home</ThemedText>
+      <ThemedText>hey my is home</ThemedText>
       </SafeAreaView>
       
     </ThemedView>
