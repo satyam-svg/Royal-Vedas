@@ -18,7 +18,7 @@ export default function Layout() {
 
   useEffect(() => {
     const prepare = async () => {
-      await new Promise((resolve) => setTimeout(resolve, 10000)); // Simulate loading
+      await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulate loading
       setIsAppReady(true);
     };
 
