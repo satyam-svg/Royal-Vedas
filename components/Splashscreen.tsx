@@ -123,7 +123,6 @@ const SplashScreenComponent = ({ navigation }: any) => {
               timeout = setTimeout(() => {
                 setIsReady(true);
                 SplashScreen.hideAsync();
-                router.replace("/login"); // Navigate to login page instead of home
               }, 2000);
           } catch (error) {
               console.error("Error during animation setup:", error);

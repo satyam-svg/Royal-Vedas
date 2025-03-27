@@ -10,9 +10,8 @@ export default function HomePage() {
   return (
     <ThemedView style={{flex:1}}>
       <SafeAreaView>
-      <ThemedText>hey my is home</ThemedText>
+      <ThemedText>hey hii this home</ThemedText>
       </SafeAreaView>
-      
     </ThemedView>
   );
 }

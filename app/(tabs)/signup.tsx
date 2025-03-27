@@ -62,7 +62,7 @@ export default function SignupScreen() {
         style={styles.logoContainer}
       >
         <Image
-          source={require('../assets/images/splash.png')}
+          source={require('../../assets/images/splash.png')}
           style={styles.logo}
           resizeMode="contain"
         />
@@ -206,7 +206,7 @@ export default function SignupScreen() {
         style={styles.loginLinkContainer}
       >
         <Text style={styles.loginLinkText}>Already have an account? </Text>
-        <Pressable onPress={() => router.push("/login")}>
+        <Pressable onPress={() => router.push('/')}>
           <Text style={styles.loginLink}>Log in</Text>
         </Pressable>
       </MotiView>
