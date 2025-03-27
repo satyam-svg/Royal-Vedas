@@ -5,7 +5,7 @@ import { AntDesign, Feather, MaterialIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { Easing } from "react-native-reanimated";
 
-export default function LoginScreen() {
+export default function SignupScreen() {
   const router = useRouter();
 
   const FloatingBackground = () => (
@@ -75,11 +75,28 @@ export default function LoginScreen() {
         transition={{ type: 'spring', delay: 500 }}
         style={styles.formContainer}
       >
-        {/* Email Input */}
+        {/* Full Name Input */}
         <MotiView
           from={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: 700 }}
+        >
+          <View style={styles.inputContainer}>
+            <Feather name="user" size={20} color="#00C2AB" style={styles.inputIcon} />
+            <TextInput
+              placeholder="Full name"
+              placeholderTextColor="#6B8A94"
+              style={styles.input}
+              autoCapitalize="words"
+            />
+          </View>
+        </MotiView>
+
+        {/* Email Input */}
+        <MotiView
+          from={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ delay: 900 }}
         >
           <View style={styles.inputContainer}>
             <Feather name="mail" size={20} color="#00C2AB" style={styles.inputIcon} />
@@ -97,7 +114,7 @@ export default function LoginScreen() {
         <MotiView
           from={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          transition={{ delay: 900 }}
+          transition={{ delay: 1100 }}
         >
           <View style={styles.inputContainer}>
             <Feather name="lock" size={20} color="#00C2AB" style={styles.inputIcon} />
@@ -113,23 +130,42 @@ export default function LoginScreen() {
           </View>
         </MotiView>
 
-        {/* Login Button */}
+        <MotiView
+          from={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ delay: 1100 }}
+        >
+          <View style={styles.inputContainer}>
+            <Feather name="lock" size={20} color="#00C2AB" style={styles.inputIcon} />
+            <TextInput
+              placeholder="Confirm Password"
+              placeholderTextColor="#6B8A94"
+              style={styles.input}
+              secureTextEntry
+            />
+            <Pressable style={styles.visibilityToggle}>
+              <MaterialIcons name="visibility-off" size={20} color="#6B8A94" />
+            </Pressable>
+          </View>
+        </MotiView>
+
+        {/* Signup Button */}
         <MotiView
           from={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          transition={{ type: 'spring', delay: 1100 }}
+          transition={{ type: 'spring', delay: 1300 }}
         >
           <Pressable
             style={({ pressed }) => [
-              styles.loginButton,
-              pressed && styles.loginButtonPressed
+              styles.signupButton,
+              pressed && styles.buttonPressed
             ]}
           >
             <LinearGradient
               colors={['#00C2AB', '#00A8C2']}
               style={styles.buttonGradient}
             >
-              <Text style={styles.buttonText}>Sign In</Text>
+              <Text style={styles.buttonText}>Create Account</Text>
             </LinearGradient>
           </Pressable>
         </MotiView>
@@ -138,12 +174,12 @@ export default function LoginScreen() {
         <MotiView
           from={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1300 }}
+          transition={{ delay: 1500 }}
           style={styles.socialContainer}
         >
           <View style={styles.socialDivider}>
             <View style={styles.dividerLine} />
-            <Text style={styles.dividerText}>Or continue with</Text>
+            <Text style={styles.dividerText}>Or sign up with</Text>
             <View style={styles.dividerLine} />
           </View>
 
@@ -162,16 +198,16 @@ export default function LoginScreen() {
         </MotiView>
       </MotiView>
 
-      {/* Signup Link */}
+      {/* Login Link */}
       <MotiView
         from={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1500 }}
-        style={styles.signupContainer}
+        transition={{ delay: 1700 }}
+        style={styles.loginLinkContainer}
       >
-        <Text style={styles.signupText}>Don't have an account? </Text>
-        <Pressable onPress={()=>router.push('/signup')}>
-          <Text style={styles.signupLink}>Sign up</Text>
+        <Text style={styles.loginLinkText}>Already have an account? </Text>
+        <Pressable onPress={() => router.push("/login")}>
+          <Text style={styles.loginLink}>Log in</Text>
         </Pressable>
       </MotiView>
     </KeyboardAvoidingView>
@@ -205,12 +241,12 @@ const styles = StyleSheet.create({
   },
   logoContainer: {
     alignItems: 'center',
-    marginTop: 80,
-    marginBottom: 40,
+    marginTop: 50,
+    marginBottom: 30,
   },
   logo: {
-    width: 180,
-    height: 180,
+    width: 160,
+    height: 160,
   },
   formContainer: {
     marginHorizontal: 30,
@@ -229,7 +265,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
     borderRadius: 15,
     paddingHorizontal: 20,
-    marginBottom: 20,
+    marginBottom: 15,
     height: 50,
   },
   inputIcon: {
@@ -245,16 +281,16 @@ const styles = StyleSheet.create({
     padding: 5,
     marginLeft: 10,
   },
-  loginButton: {
+  signupButton: {
     borderRadius: 15,
     overflow: 'hidden',
-    marginTop: 10,
+    marginTop: 20,
     shadowColor: '#00C2AB',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 10,
   },
-  loginButtonPressed: {
+  buttonPressed: {
     opacity: 0.9,
     transform: [{ scale: 0.98 }],
   },
@@ -269,7 +305,7 @@ const styles = StyleSheet.create({
     letterSpacing: 0.5,
   },
   socialContainer: {
-    marginTop: 30,
+    marginTop: 25,
   },
   socialDivider: {
     flexDirection: 'row',
@@ -305,17 +341,17 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
   },
-  signupContainer: {
+  loginLinkContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginTop: 30,
+    marginTop: 25,
     marginBottom: 20,
   },
-  signupText: {
+  loginLinkText: {
     color: '#6B8A94',
     fontFamily: 'Inter_400Regular',
   },
-  signupLink: {
+  loginLink: {
     color: '#00C2AB',
     fontFamily: 'Inter_600SemiBold',
   },

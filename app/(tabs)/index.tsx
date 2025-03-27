@@ -8,7 +8,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function HomeScreen() {
   return (
-    <ThemedView style={{flex:1}}>
+    <ThemedView style={{flex:1, backgroundColor:'red'}}>
       <SafeAreaView>
       <ThemedText>hey this is login</ThemedText>
       </SafeAreaView>
