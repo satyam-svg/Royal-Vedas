@@ -10,7 +10,7 @@ export default function HomeScreen() {
   return (
     <ThemedView style={{flex:1}}>
       <SafeAreaView>
-      <ThemedText>hey this is home</ThemedText>
+      <ThemedText>hey this is login</ThemedText>
       </SafeAreaView>
       
     </ThemedView>
