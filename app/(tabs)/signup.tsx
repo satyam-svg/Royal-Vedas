@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { View, Text, TextInput, Pressable, Image, StyleSheet, KeyboardAvoidingView, Platform } from "react-native";
 import { useRouter } from "expo-router";
 import { MotiView, MotiText } from "moti";
@@ -7,6 +8,13 @@ import { Easing } from "react-native-reanimated";
 
 export default function SignupScreen() {
   const router = useRouter();
+  const [isOTPLogin, setIsOTPLogin] = useState(false);
+  const [mobileNumber, setMobileNumber] = useState('');
+  const [otp, setOtp] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [emailOtpSent, setEmailOtpSent] = useState(false);
+  const [emailOtp, setEmailOtp] = useState('');
 
   const FloatingBackground = () => (
     <MotiView
@@ -47,6 +55,21 @@ export default function SignupScreen() {
     </MotiView>
   );
 
+  const handleMobileLoginPress = () => {
+    setIsOTPLogin(prev => !prev);
+    if (isOTPLogin) {
+      setMobileNumber('');
+      setOtp('');
+    }
+  };
+
+  const togglePasswordVisibility = () => setShowPassword(!showPassword);
+  const toggleConfirmPasswordVisibility = () => setShowConfirmPassword(!showConfirmPassword);
+
+  const handleSendEmailOtp = () => {
+    setEmailOtpSent(true);
+  };
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -75,97 +98,211 @@ export default function SignupScreen() {
         transition={{ type: 'spring', delay: 500 }}
         style={styles.formContainer}
       >
-        {/* Full Name Input */}
-        <MotiView
-          from={{ scale: 0.9, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ delay: 700 }}
-        >
-          <View style={styles.inputContainer}>
-            <Feather name="user" size={20} color="#00C2AB" style={styles.inputIcon} />
-            <TextInput
-              placeholder="Full name"
-              placeholderTextColor="#6B8A94"
-              style={styles.input}
-              autoCapitalize="words"
-            />
-          </View>
-        </MotiView>
+        {!isOTPLogin ? (
+          <>
+            {/* Full Name Input */}
+            <MotiView
+              from={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 700 }}
+            >
+              <View style={styles.inputContainer}>
+                <Feather name="user" size={20} color="#00C2AB" style={styles.inputIcon} />
+                <TextInput
+                  placeholder="Full name"
+                  placeholderTextColor="#6B8A94"
+                  style={styles.input}
+                  autoCapitalize="words"
+                />
+              </View>
+            </MotiView>
 
-        {/* Email Input */}
-        <MotiView
-          from={{ scale: 0.9, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ delay: 900 }}
-        >
-          <View style={styles.inputContainer}>
-            <Feather name="mail" size={20} color="#00C2AB" style={styles.inputIcon} />
-            <TextInput
-              placeholder="Email address"
-              placeholderTextColor="#6B8A94"
-              style={styles.input}
-              keyboardType="email-address"
-              autoCapitalize="none"
-            />
-          </View>
-        </MotiView>
+            {/* Email Input */}
+            <MotiView
+              from={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 900 }}
+            >
+              <View style={styles.inputContainer}>
+                <Feather name="mail" size={20} color="#00C2AB" style={styles.inputIcon} />
+                <TextInput
+                  placeholder="Email address"
+                  placeholderTextColor="#6B8A94"
+                  style={styles.input}
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                />
+              </View>
+            </MotiView>
 
-        {/* Password Input */}
-        <MotiView
-          from={{ scale: 0.9, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ delay: 1100 }}
-        >
-          <View style={styles.inputContainer}>
-            <Feather name="lock" size={20} color="#00C2AB" style={styles.inputIcon} />
-            <TextInput
-              placeholder="Password"
-              placeholderTextColor="#6B8A94"
-              style={styles.input}
-              secureTextEntry
-            />
-            <Pressable style={styles.visibilityToggle}>
-              <MaterialIcons name="visibility-off" size={20} color="#6B8A94" />
-            </Pressable>
-          </View>
-        </MotiView>
+            {/* Password Input */}
+            <MotiView
+              from={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 1100 }}
+            >
+              <View style={styles.inputContainer}>
+                <Feather name="lock" size={20} color="#00C2AB" style={styles.inputIcon} />
+                <TextInput
+                  placeholder="Password"
+                  placeholderTextColor="#6B8A94"
+                  style={styles.input}
+                  secureTextEntry={!showPassword}
+                />
+                <Pressable style={styles.visibilityToggle} onPress={togglePasswordVisibility}>
+                  <MaterialIcons 
+                    name={showPassword ? 'visibility' : 'visibility-off'} 
+                    size={20} 
+                    color="#6B8A94" 
+                  />
+                </Pressable>
+              </View>
+            </MotiView>
 
-        <MotiView
-          from={{ scale: 0.9, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ delay: 1100 }}
-        >
-          <View style={styles.inputContainer}>
-            <Feather name="lock" size={20} color="#00C2AB" style={styles.inputIcon} />
-            <TextInput
-              placeholder="Confirm Password"
-              placeholderTextColor="#6B8A94"
-              style={styles.input}
-              secureTextEntry
-            />
-            <Pressable style={styles.visibilityToggle}>
-              <MaterialIcons name="visibility-off" size={20} color="#6B8A94" />
-            </Pressable>
-          </View>
-        </MotiView>
+            {/* Confirm Password Input */}
+            <MotiView
+              from={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 1300 }}
+            >
+              <View style={styles.inputContainer}>
+                <Feather name="lock" size={20} color="#00C2AB" style={styles.inputIcon} />
+                <TextInput
+                  placeholder="Confirm Password"
+                  placeholderTextColor="#6B8A94"
+                  style={styles.input}
+                  secureTextEntry={!showConfirmPassword}
+                />
+                <Pressable style={styles.visibilityToggle} onPress={toggleConfirmPasswordVisibility}>
+                  <MaterialIcons 
+                    name={showConfirmPassword ? 'visibility' : 'visibility-off'} 
+                    size={20} 
+                    color="#6B8A94" 
+                  />
+                </Pressable>
+              </View>
+            </MotiView>
+
+            {/* Email OTP Input - Appears only after clicking Send OTP */}
+            {emailOtpSent && (
+              <MotiView
+                from={{ translateY: 20, opacity: 0 }}
+                animate={{ translateY: 0, opacity: 1 }}
+                transition={{ type: 'spring', delay: 100 }}
+              >
+                <View style={styles.inputContainer}>
+                  <Feather name="shield" size={20} color="#00C2AB" style={styles.inputIcon} />
+                  <TextInput
+                    placeholder="Enter Email OTP"
+                    placeholderTextColor="#6B8A94"
+                    style={styles.input}
+                    keyboardType="number-pad"
+                    value={emailOtp}
+                    onChangeText={setEmailOtp}
+                    maxLength={6}
+                  />
+                  <MotiView
+                    animate={{ rotate: emailOtp.length === 6 ? '0deg' : '90deg' }}
+                    transition={{ type: 'spring' }}
+                  >
+                    <Feather 
+                      name="arrow-right-circle" 
+                      size={24} 
+                      color={emailOtp.length === 6 ? '#00C2AB' : '#6B8A94'} 
+                    />
+                  </MotiView>
+                </View>
+              </MotiView>
+            )}
+          </>
+        ) : (
+          <>
+            {/* Mobile Input */}
+            <MotiView
+              from={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ type: 'spring', delay: 200 }}
+            >
+              <View style={styles.inputContainer}>
+                <Feather name="smartphone" size={20} color="#00C2AB" style={styles.inputIcon} />
+                <TextInput
+                  placeholder="Enter mobile number"
+                  placeholderTextColor="#6B8A94"
+                  style={styles.input}
+                  keyboardType="phone-pad"
+                  value={mobileNumber}
+                  onChangeText={setMobileNumber}
+                  maxLength={10}
+                />
+                {mobileNumber.length === 10 && (
+                  <MotiView
+                    from={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ type: 'spring' }}
+                  >
+                    <Feather name="check-circle" size={20} color="#00C2AB" />
+                  </MotiView>
+                )}
+              </View>
+            </MotiView>
+
+            {/* Mobile OTP Input - Appears only when mobile is valid */}
+            {mobileNumber.length === 10 && (
+              <MotiView
+                from={{ translateY: 20, opacity: 0 }}
+                animate={{ translateY: 0, opacity: 1 }}
+                transition={{ type: 'spring', delay: 100 }}
+              >
+                <View style={styles.inputContainer}>
+                  <Feather name="shield" size={20} color="#00C2AB" style={styles.inputIcon} />
+                  <TextInput
+                    placeholder="Enter OTP"
+                    placeholderTextColor="#6B8A94"
+                    style={styles.input}
+                    keyboardType="number-pad"
+                    value={otp}
+                    onChangeText={setOtp}
+                    maxLength={6}
+                  />
+                  <MotiView
+                    animate={{ rotate: otp.length === 6 ? '0deg' : '90deg' }}
+                    transition={{ type: 'spring' }}
+                  >
+                    <Feather 
+                      name="arrow-right-circle" 
+                      size={24} 
+                      color={otp.length === 6 ? '#00C2AB' : '#6B8A94'} 
+                    />
+                  </MotiView>
+                </View>
+              </MotiView>
+            )}
+          </>
+        )}
 
         {/* Signup Button */}
         <MotiView
           from={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          transition={{ type: 'spring', delay: 1300 }}
+          transition={{ type: 'spring', delay: 1500 }}
         >
           <Pressable
             style={({ pressed }) => [
               styles.signupButton,
               pressed && styles.buttonPressed
             ]}
+            onPress={!isOTPLogin ? (emailOtpSent ? () => router.push("/(homepage)") : handleSendEmailOtp) : 
+                      (otp.length === 6 ? () => router.push("/(homepage)") : handleSendEmailOtp)}
           >
             <LinearGradient
               colors={['#00C2AB', '#00A8C2']}
               style={styles.buttonGradient}
             >
-              <Text style={styles.buttonText}>Create Account</Text>
+              <Text style={styles.buttonText}>
+                {isOTPLogin 
+                  ? (otp.length === 6 ? 'Create Account' : 'Send OTP') 
+                  : (emailOtpSent ? 'Create Account' : 'Send OTP')}
+              </Text>
             </LinearGradient>
           </Pressable>
         </MotiView>
@@ -174,7 +311,7 @@ export default function SignupScreen() {
         <MotiView
           from={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1500 }}
+          transition={{ delay: 1700 }}
           style={styles.socialContainer}
         >
           <View style={styles.socialDivider}>
@@ -191,8 +328,23 @@ export default function SignupScreen() {
               />
             </Pressable>
 
-            <Pressable style={styles.socialButton}>
-              <AntDesign name="mobile1" size={24} color="#00C2AB" />
+            <Pressable 
+              style={styles.socialButton}
+              onPress={handleMobileLoginPress}
+            >
+              <MotiView
+                animate={{ 
+                  rotate: isOTPLogin ? '45deg' : '0deg',
+                  scale: isOTPLogin ? 1.2 : 1
+                }}
+                transition={{ type: 'spring' }}
+              >
+                <AntDesign 
+                  name="mobile1" 
+                  size={24} 
+                  color={isOTPLogin ? '#00C2AB' : '#6B8A94'} 
+                />
+              </MotiView>
             </Pressable>
           </View>
         </MotiView>
@@ -202,7 +354,7 @@ export default function SignupScreen() {
       <MotiView
         from={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1700 }}
+        transition={{ delay: 1900 }}
         style={styles.loginLinkContainer}
       >
         <Text style={styles.loginLinkText}>Already have an account? </Text>
